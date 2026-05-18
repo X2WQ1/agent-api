@@ -128,7 +128,11 @@ def agent_task(task: str, folder_path: str = None):
             if "```" in 代码:
                 代码 = 代码.replace("```python", "").replace("```", "").strip()
 
-            保存路径 = os.path.join(os.path.expanduser("~"), "Desktop", "generated_script.py")
+            # 根据环境选择保存路径（本地用桌面，Render 用 /tmp）
+            if os.environ.get("RENDER"):
+                保存路径 = "/tmp/generated_script.py"
+            else:
+                保存路径 = os.path.join(os.path.expanduser("~"), "Desktop", "generated_script.py")
             with open(保存路径, "w", encoding="utf-8") as f:
                 f.write(代码)
 
@@ -155,4 +159,4 @@ def agent_task(task: str, folder_path: str = None):
         "task": task,
         "plan": 步骤计划,
         "execution": 执行记录
-    }
+    }   
